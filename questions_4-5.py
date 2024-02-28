@@ -63,7 +63,7 @@ for element in N:
     
 # %% Tracer
 
-size = 13.2
+size = 10
 #
 if False:
     size = 100
@@ -78,4 +78,4 @@ for df_N in courbes_N:  #
 #plt.ylim(-1,1)
 #plt.xscale('log')
 #plt.yscale('log')
-plt.legend(loc='lower right', fontsize=size*0.75)
+plt.legend(loc='lower right', fontsize=size)
