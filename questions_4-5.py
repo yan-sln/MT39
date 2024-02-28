@@ -47,9 +47,9 @@ sequence_de_t = sequence(intervalle[0], intervalle[1], pas)
 
 #
 t_vals = []
-for element in sequence_de_t:
-    t_t = exp(fonction)
-    t_vals.append([element, t_t.real, t_t.imag])
+for t in sequence_de_t:
+    t_t = exp(eval(fonction))
+    t_vals.append([t, t_t.real, t_t.imag])
 df_t = pd.DataFrame(t_vals, columns=['t', 'x', 'y'])
 
 #
@@ -60,7 +60,7 @@ for element in N:
         N_t = exp_approx(element, t, fonction)
         N_vals.append([element, N_t.real, N_t.imag])
     courbes_N.append(pd.DataFrame(N_vals, columns=['t', 'x', 'y']))
-
+    
 # %%
 sns.lineplot(data=df_t, x='x', y='y', palette="tab10", label="ref", linewidth=1)
 for df_N in courbes_N:  #
