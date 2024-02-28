@@ -61,18 +61,19 @@ for element in N:
         N_vals.append([element, N_t.real, N_t.imag])
     courbes_N.append(pd.DataFrame(N_vals, columns=['t', 'x', 'y']))
     
-# %%
-sns.lineplot(data=df_t, x='x', y='y', palette="tab10", label="ref", linewidth=1)
-for df_N in courbes_N:  #
-    sns.lineplot(data=df_N, x='x', y='y', palette="tab10", label=df_N['t'][0], linewidth=1)
+# %% Tracer
 
-# %%
 size = 13.2
 #
 if False:
     size = 100
     rcParams['figure.dpi'] = 300
     rcParams['figure.figsize'] = (size, size)
+
+sns.lineplot(data=df_t, x='x', y='y', palette="tab10", label="ref", linewidth=1)
+for df_N in courbes_N:  #
+    sns.lineplot(data=df_N, x='x', y='y', palette="tab10", label=df_N['t'][0], linewidth=1)
+    
 #plt.xlim(-1,1)
 #plt.ylim(-1,1)
 #plt.xscale('log')
