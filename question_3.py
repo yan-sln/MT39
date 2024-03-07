@@ -4,16 +4,13 @@ Created on Tue Feb 27 08:19:19 2024
 
 @author: riouyans
 """
-# %%
+import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import pandas as pd
-from matplotlib import rcParams
-from math import exp
+from cmath import exp
 
-# %% Paramètre d'entrée & fonctions
-x = (-4, 4); x_vals = {}
-N = {1: None, 2: None, 5: None, 8: None}
+# Paramètre d'entrée
+N = [1, 2, 5, 8]
 intervalle = (-4, 4)
 pas = 10e-2     # Correspond à 81 points
 
@@ -27,36 +24,21 @@ def sequence(debut, fin, pas=1):
     else:
         return([])
 
-# %%
-
 # Définie une suite de points espacé de pas dans l'intervalle
 sequence_de_t = sequence(intervalle[0], intervalle[1], pas)
 
-#
-for element in sequence_de_t:
-    x_vals[element] = exp(element)
-df_x = pd.DataFrame(x_vals.items())
-
-#
-for element in N.keys():
-    N[element] = exp(element)
-df_N = pd.DataFrame(N.items())
-
-# %%
-
-size = 10
-#
-if False:
-    size = 100
-    rcParams['figure.dpi'] = 300
-    rcParams['figure.figsize'] = (size, size)
-
+# On crée un DataFrame pour les x
+df_x = pd.DataFrame({key: exp(key) for key in sequence_de_t}.items())
+# On crée un DataFrame pour les N
+df_N = pd.DataFrame({key: exp(key) for key in N}.items())
+# On trace les différentes courbes
 sns.lineplot(data=df_x, x=0, y=1, palette="tab10", label="ref", linewidth=1)
 sns.lineplot(data=df_N, x=0, y=1, palette="tab10", label="approx", linewidth=1, marker='o')
 
+# Différentes configurations pour rendre le graphe plus lisible
 plt.ylim(1)
 plt.xscale('log')
 plt.yscale('log')
 plt.xlabel("X")
 plt.ylabel("Y")
-plt.legend(loc='upper left', fontsize=size)
+plt.legend(loc='upper left')
