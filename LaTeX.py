@@ -155,7 +155,7 @@ print(f'ρ ≃ {ρ} et le nombre d\'or approché vaut {suite[-1]/suite[-2]}')
 df_k = pd.DataFrame({k:ρ**k for k in cache.keys()}.items())
 sns.lineplot(data=df_k, x=0, y=1, palette="tab10", label="ρ^k", linewidth=1)
 
-# %% Question 11 à 16
+# %% Question 11 à 15
 
 #
 def tracer(func):        
