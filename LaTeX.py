@@ -67,7 +67,7 @@ if False:
 else:
     # Question 5
     FONCTION = '(t + t*1j)'
-
+    
 def tracer_avec_points(df:pd.DataFrame, label:str, **kwargs):
     """Trace une courbe en plus du premier et dernier point."""
     plt.plot(df['x'],df['y'], label=label, **kwargs)
@@ -95,6 +95,44 @@ for nb in N:    # Pour chaque nombre de N
 plt.grid(); plt.legend(bbox_to_anchor=(1.05, 1), shadow=True)
 plt.title('Premier point : •  Dernier point : ▲')
 plt.show()
+
+# %% Question 4 cos et sin
+FONCTION = '(t*1j)'     # On reprend la fonction de la question 4
+
+if False:
+    func = 'cos'
+    x, y = 't', 'x'
+else:
+    func = 'sin'
+    x, y = 't', 'y'
+    
+def tracer_sans_points(df:pd.DataFrame, x:str, y:str, label:str, **kwargs):
+    """Trace une courbe."""
+    plt.plot(df[x],df[y], label=label, **kwargs)
+
+# On crée un jeu de données pour la fonction 'func'
+dct = {key: eval(func)(key) for key in sequence_de_t}
+df = pd.DataFrame(dct.items(), columns=['t', f'{func}(t)'])
+plt.plot(df['t'], df[f'{func}(t)'], label=func, linewidth=4, linestyle='dashed')
+
+# On crée un jeu de données pour la fonction exp de référence
+t_vals = [[t,(tmp:=exp(eval(FONCTION))).real,tmp.imag] for t in sequence_de_t]
+df_ref = pd.DataFrame(t_vals, columns=['t', 'x', 'y'])
+tracer_sans_points(df_ref, x, y, "ref", linewidth=2)  # On le trace
+
+#
+for nb in N:    # Pour chaque nombre de N
+    N_vals = []
+    for t in sequence_de_t: # On crée une liste
+        N_t = exp_approx_func(nb, t, FONCTION)
+        N_vals.append([t, N_t.real, N_t.imag])
+    # On crée un de jeu de données à partir de la liste
+    df_N = pd.DataFrame(N_vals, columns=['t', 'x', 'y'])
+    tracer_sans_points(df_N, x, y, f'{nb}')
+
+# Différentes configurations pour rendre le graphe plus lisible
+plt.grid(); plt.legend(bbox_to_anchor=(1.05, 1), shadow=True)
+plt.title(f'{func}'); plt.show()
 
 # %% Question 6 et 7
 def puissance_nombre(nombre:float)->float:
