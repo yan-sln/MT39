@@ -1,21 +1,22 @@
 # **Exponentielle, approximation, évolution d’une population**
 
-- [ ] Question 3 :      
-![question_3](https://github.com/Toppics/MT39/assets/110732997/4e0381c0-d0a5-4eae-8c7b-d20bc2483608)
-
-- [ ] Question 4 :
-![question_4B](https://github.com/Toppics/MT39/assets/110732997/0c0f5cf9-726d-423a-9d91-532e22bad708)
-![cos](https://github.com/Toppics/MT39/assets/110732997/573b26b4-a0b1-40ca-b141-7c9b5b850c7d)
-![Sin](https://github.com/Toppics/MT39/assets/110732997/6db67a64-eda3-48b7-957d-c6c8a91e2e5f)
-
-- [ ] Question 5 :
-![question_5B](https://github.com/Toppics/MT39/assets/110732997/15ae0580-4431-4ff1-abd1-09e8a1f50bfb)
-
-- [ ] Question 9-10 :
-![question_9-10B_sans_correc](https://github.com/Toppics/MT39/assets/110732997/812d8045-1197-4fad-b03d-0509c8809452)
-![question_9-10B_avec_correc](https://github.com/Toppics/MT39/assets/110732997/3428c495-afcd-4ae8-b222-95148d6bd6de)
-![question_9-10B_avec_coeff](https://github.com/Toppics/MT39/assets/110732997/42c8a94d-78ef-4672-93db-6adeccc3f369)
-
-
-- [ ] Question 11-15 :
-![question_11-15](https://github.com/Toppics/MT39/assets/110732997/1c164057-e777-447f-b87e-31a6a82d5150)
+![question_3C](https://github.com/Toppics/MT39/assets/110732997/aa781186-9498-41d4-856f-78009e798be2)
+![question_4B](https://github.com/Toppics/MT39/assets/110732997/a035c944-d3b3-4843-a5f0-b4793cfd46cb)
+![q4_cos_sin](https://github.com/Toppics/MT39/assets/110732997/61607862-4aa3-449f-9e50-ee66fff7d5f8)
+![cos](https://github.com/Toppics/MT39/assets/110732997/ab63edc0-296b-49e1-8971-7e0e9e4de890)
+![sin](https://github.com/Toppics/MT39/assets/110732997/df0db915-b799-47e0-9f08-4d74edbf688f)
+![question_5B](https://github.com/Toppics/MT39/assets/110732997/1710d8a1-044f-4154-96ee-9dfafd11207e)
+![question_6](https://github.com/Toppics/MT39/assets/110732997/d24a8f87-a75c-49a9-8bc9-36121762caea)
+![question_9-10B_avec_coeff](https://github.com/Toppics/MT39/assets/110732997/c8b40515-0539-4f7e-97a5-897421b90bad)
+![question_9-10B_avec_correc](https://github.com/Toppics/MT39/assets/110732997/6dfe9dd4-4d7e-4524-9276-e3096b4af209)
+![question_9-10B_sans_correc](https://github.com/Toppics/MT39/assets/110732997/b224803f-a070-43c9-af47-257dbf717710)
+![question_11_12_16_N36](https://github.com/Toppics/MT39/assets/110732997/ec34a9ba-b432-4fb1-a21d-7cad4cf86d99)
+![question_11_12_16_N360](https://github.com/Toppics/MT39/assets/110732997/abbae8c4-5ead-441d-83c1-e62dbd197602)
+![question_13](https://github.com/Toppics/MT39/assets/110732997/f0d1824e-bb4e-4d80-9d48-c434f9c26a70)
+![question_13_N36](https://github.com/Toppics/MT39/assets/110732997/93f2d40a-a7a4-4bcd-93cd-8ed607ee06e7)
+![question_13_N36000](https://github.com/Toppics/MT39/assets/110732997/9a4e0ea2-af0e-44af-883b-140db6cf8561)
+![question_14_15_16_N18_y02](https://github.com/Toppics/MT39/assets/110732997/23764935-2da5-4e78-b049-3743bb03b7fc)
+![question_14_15_16_N18_y100](https://github.com/Toppics/MT39/assets/110732997/ef455df4-d218-43ab-851b-4b5d640fb716)
+![question_14_15_16_N36_y02](https://github.com/Toppics/MT39/assets/110732997/930d7e7d-e7ba-479a-b025-ebe1ca509423)
+![question_14_15_16_N36_y50](https://github.com/Toppics/MT39/assets/110732997/959e8d22-8209-42b6-a9e6-3b42563d9540)
+![question_14_15_16_N36_y100](https://github.com/Toppics/MT39/assets/110732997/24a9c183-04e4-476b-9d8c-42794ee57a59)
