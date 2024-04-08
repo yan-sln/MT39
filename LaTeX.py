@@ -15,8 +15,7 @@ import matplotlib.pyplot as plt
 filterwarnings("ignore")    # Retirer les avertissements de la console
 
 rcParams['figure.dpi']:int = 300    # Augmenter la résolution des figures
-plt.rcParams["legend.loc"]:str = "upper left"   # Titre en haut à gauche
-#rcParams['figure.figsize'] = (size, size)
+plt.rcParams["legend.loc"]:str = "upper left"   # Legende en haut à gauche
 
 # Paramètres d'entrée
 N:list = [1, 2, 5, 8]
@@ -209,3 +208,121 @@ for func in ρ_FONCTION: # Trace les différentes courbes
 
 # Différentes configurations pour rendre le graphe plus lisible
 plt.legend(); plt.xlim(1, MOIS); plt.show()     # Affiche le graphe
+
+# %% Question 11 à 16
+from numpy import linspace
+
+# Formule explicite
+def euler_explicite(y0, n):
+    """La formule d'Euler explicite."""
+    return (1+(y0/n))**n
+
+def tracer(func):
+    """Décorateur à appliquer tracer une fonction."""
+    def wrapper(*args, **kwargs):
+        x, y = func(*args, **kwargs)
+        df = pd.DataFrame({'x':x, 'y':y})
+        plt.plot(df['x'],df['y'], label=f'{func.__name__} y0={kwargs["y0"]}')
+    return wrapper
+
+############ Modèle à taux de repoduction constant
+def lapins(r, y0:int, h, N:int)->list:
+    """ """
+    t = linspace(0, N*h, N)
+    y = list(range(len(t)))    # Créer une liste remplie de 0 de taille t
+    for k in range(1, len(t)):
+        y[k] = y0*exp(r*h*k)
+    df = pd.DataFrame({'x':t, 'y':y})
+    plt.plot(df['x'],df['y'], label=f'lapins y0={y0}', linestyle='dashed', linewidth=3)
+
+@tracer
+def lapinsEuler(r, y0:int, h, N)->list:
+    """ """
+    t = linspace(0, N*h, N)
+    y = list(range(len(t)))
+    for idx, k in enumerate(t):
+        y[idx] = y0*euler_explicite(r*k, N)
+    return t, y
+
+@tracer
+def lapinsHeun(r, y0:int, h, N:int)->list:
+    """ """
+    t = linspace(0, N*h, N)
+    y = list(range(len(t)))    # Créer une liste remplie de 0 de taille t
+    y[0] = y0
+    for k in range(1, len(t)):
+        y[k] = y[k-1]*(1+(r*h)+((1/2)*(r**2)*(h**2)))
+    return t, y
+
+############ Modèle avec ressource limitée
+def lapins2(r, Y, y0:int, h, N:int)->list:
+    """ """
+    t = linspace(0, N*h, N)
+    y = list(range(len(t)))    # Créer une liste remplie de 0 de taille t
+    for k in range(1, len(t)):
+        y[k] = Y/(1+((Y/y0)-1)*exp(-r*h*k))
+    df = pd.DataFrame({'x':t, 'y':y})
+    plt.plot(df['x'],df['y'], label=f'lapins2 y0={y0}', linestyle='dashed', linewidth=2)
+
+@tracer
+def lapinsEuler2(r, Y, y0:int, h, N)->list:
+    """ """
+    t = linspace(0, N*h, N)
+    y = list(range(len(t)))
+    for idx, k in enumerate(t):
+        y[idx] = Y/(1+((Y/y0)-1)*euler_explicite(-r*k, N))
+    return t, y
+
+@tracer
+def lapins2Heun(r, Y, y0, h, N):
+    t = linspace(0, N*h, N)
+    y = list(range(len(t)))    # Créer une liste remplie de 0 de taille t
+    y[0] = y0
+    for k in range(1, len(t)):
+        Γ = r*y[k-1]*(1-y[k-1]/Y)
+        y[k] = y[k-1]+0.5*h*(Γ+r*(y[k-1]+h*(Γ))*(1-(y[k-1]+h*(Γ))/Y))
+    return t, y
+
+if __name__ == '__main__':
+    MOIS = 36   # Nombre de mois
+    N = 360     # Nombre de points
+    h = MOIS/N  # PAS entre 2 points de la courbe
+    y0 = 2      # Nombre de lapins
+    r = 0.5     # Taux de reproduction
+    Y = 50      # Seuil
+
+    if True:
+        # Question 11
+        lapins(r=r, y0=y0, h=h, N=N)
+        # Question 12
+        lapinsEuler(r=r, y0=y0, h=h, N=N)
+        # Question 16
+        lapinsHeun(r=r, y0=y0, h=h, N=N)
+        plt.title(f'Mois: {MOIS}, Precision: {N}, Pas: {MOIS/N}, y0: {y0}, taux: {r}.')
+
+    if False:
+        #r = 1/sqrt(5)
+        #Question 13
+        lapins(r=r, y0=y0, h=h, N=N)
+        plt.title(f'Mois: {MOIS}, Precision: {N}, Pas: {MOIS/N}, y0: {y0}, taux: {r}.')
+
+        # Fibonacci
+        suite = [fibonacci(n) for n in range(MOIS+1)]
+        # On crée un jeu de données pour la suite k->uk
+        df = pd.DataFrame({'mois':list(range(MOIS+1)), 'couples': suite})
+        plt.plot(df['mois'],df['couples'], label='k->uk')
+
+    if False:
+        y0 = 2#|50|100
+        # Question 14
+        lapins2(r=r, Y=Y, y0=y0, h=h, N=N)
+        # Question 15
+        lapinsEuler2(r=r, Y=Y, y0=y0, h=h, N=N)
+        # Question 16
+        lapins2Heun(r=r, Y=Y, y0=y0, h=h, N=N)
+        plt.title(f'Mois: {MOIS}, Precision: {N}, Pas: {MOIS/N}, y0: {y0}, taux: {r}, Seuil: {Y}.')
+        plt.ylim(0, 100)
+
+    # Différentes configurations pour rendre le graphe plus lisible
+    plt.xlabel("Mois"); plt.ylabel("Nombre d'individus")
+    plt.grid(); plt.xlim(1, N*h); plt.legend(); plt.show()
