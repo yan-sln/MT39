@@ -234,7 +234,7 @@ def menu():
     intervalle = choix_intervalle()
     affichage,sup = choix_affichage()
     # Dangereux, mais fonctionne... # eval(modele(donnee).affichage(intervalle,sup))
-    eval(f'{modele}(*{eval(donnee)}).{affichage}{f'(*{eval(intervalle)},{sup})' if sup else f'(*{eval(intervalle)})'}')
+    eval(f'{modele}(*{eval(donnee)}).{affichage}{f'(*{eval(intervalle)},"{sup}")' if sup else f'(*{eval(intervalle)})'}')
 
 if __name__ == '__main__':
     menu()
