@@ -213,10 +213,10 @@ def menu():
         if entree==2:
             entree = menu_choix({1:"τ de reproduction intrinsèques des lapins",2:"τ de mortalité des lapins due aux lynx rencontrés",3:"τ de mortalité intrinsèques des lynx",4:"τ de reproduction des lynx en f° des lapins mangés",0:"Sortie"},'01234')
             if entree==0: raise KeyboardInterrupt('-Fin')
-            if entree==1: return 'affichage_variation__τ','r'
-            if entree==2: return 'affichage_variation__τ','p'
-            if entree==3: return 'affichage_variation__τ','m'
-            if entree==4: return 'affichage_variation__τ','q'
+            if entree==1: return 'affichage_variation__τ',"'r'"  # Petit artifice bien pratique pour le eval
+            if entree==2: return 'affichage_variation__τ',"'p'"
+            if entree==3: return 'affichage_variation__τ',"'m'"
+            if entree==4: return 'affichage_variation__τ',"'q'"
         if entree==3:
             print()
             entree = menu_choix({1:"Activé point d'équilibre",2:"Désactivé point d'équilibre",0:"Sortie"},'01234')
@@ -234,7 +234,8 @@ def menu():
     intervalle = choix_intervalle()
     affichage,sup = choix_affichage()
     # Dangereux, mais fonctionne... # eval(modele(donnee).affichage(intervalle,sup))
-    eval(f'{modele}(*{eval(donnee)}).{affichage}{f'(*{eval(intervalle)},"{sup}")' if sup else f'(*{eval(intervalle)})'}')
-
+    eval(f'{modele}(*{eval(donnee)}).{affichage}{f'(*{eval(intervalle)}, {sup})' if sup else f'(*{eval(intervalle)})'}')
+    
+    
 if __name__ == '__main__':
     menu()
