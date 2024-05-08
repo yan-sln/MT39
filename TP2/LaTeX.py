@@ -372,7 +372,7 @@ def menu():
         match menu_choix({1:"Intervalle prédéfini",2:"Entrée manuelle",0:"Sortie"},'012'):
             case 0: raise KeyboardInterrupt('-Fin')
             case 1: return '0, 50, 0.0005'
-            case 2: return f'{input("Début (float>=0): ")},{input("Fin (float>=0 et >=start): ")},{input("Pas (float>0): ")}'
+            case 2: return f'{input("Début (float>=0): ")},{input("Fin (float>=0 et >=start): ")},{input("Pas (float>0): ")}'   # Pas de vérification sur h, peut faire planter
 
     def choix_affichage(num)->tuple((str,str)):
         print('\n' + title('Veuillez choisir l\'affichage.'))
