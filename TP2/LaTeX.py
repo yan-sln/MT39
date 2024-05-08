@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue May  7 08:21:21 2024
+Created on Thu May  9 00:20:39 2024
 
 @author: yan-s
 """
 from time import sleep
 from matplotlib import rcParams
 from matplotlib.cm import rainbow
-from numpy import array, arange, linspace, random
+from numpy import array, arange, linspace, random, meshgrid
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -45,16 +45,19 @@ def Heun(f, y0, h, N, N_min=0):
 class Lotka_Volterra:
     """Modèle dynamique par le système Lotka-Volterra."""
     def __init__(self, x0, y0, r, p, m, q):
+        """Paramètres."""
         self.x0 = x0; self.y0 = y0
         self.r = r; self.p = p
         self.m = m; self.q = q
-        self.orbite_x = self.m / self.q     # Plus cohérent de faire une liste pour intégrer orbite trivial?
+        self.orbite_x = self.m / self.q     # Pas d'orbite trivial
         self.orbite_y = self.r / self.p
 
     def __getattr__(self, name):
+        """Getter pour toutes les variables."""
         return self.__dict__[f"__{name}"]
 
     def __setattr__(self, name, value):
+        """Setter pour toutes les variables."""
         if name in ['x0', 'y0', 'n0', 'X']:
             if type(value) is not int:
                 try: value = int(value)
@@ -76,11 +79,11 @@ class Lotka_Volterra:
         return -self.m*y + self.q*x*y
 
     def fonction(self, t:float, Y:list):
-        """Fonction."""#!!!
+        """Fonction pour Euler et Heun."""
         return array([self._variation_lapin(Y[0], Y[1]), self._variation_lynx(Y[0], Y[1])])
 
     def modele_Lotka_Volterra(self, t_min: int, t_max: int, h: float, ode='ref') -> pd.DataFrame:
-        """h: le pas."""
+        """Compute l'ode sélectionnée."""
         if ode == 'ref':
             t = t_min
             dx, dy = self.x0, self.y0
@@ -176,7 +179,6 @@ class Lotka_Volterra:
     ## Méthode d'affichage un peu plus complexes
     def affichage_variation__τ(self, t_min: int, t_max: int, h: float, var:str, Delta:float = 0.5):
         """Affichage des varations des τ.
-        ----------
         var : str -> 'r' | 'p' | 'm' | 'q'.
         Delta : float, optional -> Varations totales avec un pas de 0.1, in fine le nombre de courbes. 0.5 par défaut.
         """
@@ -199,7 +201,7 @@ class Lotka_Volterra:
         fig.suptitle(f'Population de lapins et de\nlynx au cours du temps.\nConditions initiales :\n{self.x0} lapins pour {self.y0} lynx sur\nune durée de {t_max-t_min} mois\navec un pas de {h}.', x=0.92, y=0.8, ha='left', fontsize= 10)
         ax[0].grid(); ax[1].grid(); plt.show()
 
-    def affichage_orbite(self, t_min: int, t_max: int, h: float, lst_condition_initiale:list = [x for x in range(-2, 12, 2)], orbite:bool = False):
+    def portrait_phase(self, t_min: int, t_max: int, h: float, lst_condition_initiale:list = [x for x in range(-2, 12, 2)], orbite:bool = False):
         """ """
         if type(orbite) is not bool:
             raise ValueError(f'{orbite} doit être un booléen!')
@@ -225,13 +227,43 @@ class Lotka_Volterra:
         plt.legend(bbox_to_anchor=(1.05, 1), shadow=True)
         plt.grid(); plt.show()
 
+    def affichage_champ_direction(self, t_min: int, t_max: int, h: float, lst_condition_initiale:list = [x for x in range(-2, 12, 2)], orbite:bool = False, nb_fleche:int = 30):
+        """ """
+        if type(orbite) is not bool:
+            raise ValueError(f'{orbite} doit être un booléen!')
+        if type(lst_condition_initiale) is not list:
+            raise ValueError(f'{lst_condition_initiale} doit être une liste!')
+        for element in lst_condition_initiale:
+            if type(element) is not (float and int):
+                raise ValueError(f'{element} doit être un réel ou un entier!')
+        for init in lst_condition_initiale:     # Pas très poo mais fonctionne v(´・∀・｀*)v
+            _dict = dict(self.__dict__) # Nouveau dictionnaire avec paramètres modifiés
+            for key in self.__dict__.keys():
+                if key.startswith('__'): _dict[key[2:]] = _dict.pop(key)
+                else: _dict[key] = _dict.pop(key)
+            _dict['x0'] = self.x0+init; _dict['y0'] = self.y0+init
+            _dict.pop('orbite_x'); _dict.pop('orbite_y')
+            ode = eval(self.__class__.__name__)(**_dict)   # Instancie un objet
+            df = ode.modele_Lotka_Volterra(t_min, t_max, h)
+            plt.plot(df['x'], df['y'], label=f'{init}', linestyle='solid')
+        if orbite:  # Trace l'orbite (on se passe de l'obite trivial)
+            plt.plot(self.orbite_x, self.orbite_y, 'x', label='Orbite')
+        plt.xlabel('Lapins'); plt.ylabel('Lynx')
+        plt.title(f'Population de lapins et de lynx au cours du temps\nPour des conditions initiales variantes sur une durée de {t_max-t_min} mois avec un pas de {h}.')
+        plt.xlim(0,); plt.ylim(0,)
+        mat_x, mat_y = meshgrid(linspace(plt.xlim()[0],round(plt.xlim()[1]),nb_fleche), linspace(plt.ylim()[0],round(plt.ylim()[1]),nb_fleche))
+        plt.quiver(mat_x,mat_y,self._variation_lapin(mat_x,mat_y),self._variation_lynx(mat_x,mat_y),pivot='mid')
+        plt.legend(bbox_to_anchor=(1.05, 1), shadow=True)
+        plt.grid(); plt.show()
+
 
 class Lotka_Volterra_chngt_var(Lotka_Volterra):
-    """ """
+    """Modèle dynamique par le système Lotka-Volterra avec changement de variable."""
     def __init__(self, x0, y0, r, p, m, q, alpha):
+        """Paramètres + init Lotka_Volterra."""
         super().__init__(x0, y0, r, p, m, q)
-        self.alpha = alpha  # cte
-        self.orbite_x = self.m / self.q     #!!!
+        self.alpha = alpha  # Changement de variable
+        self.orbite_x = self.m / self.q 
         self.orbite_y = self.r / self.p
 
     def _variation_lapin(self, v, w) -> float:
@@ -243,10 +275,10 @@ class Lotka_Volterra_chngt_var(Lotka_Volterra):
         return -self.alpha*w + v*w
 
     def modele_Lotka_Volterra(self, t_min: int, t_max: int, h: float, ode='ref') -> pd.DataFrame:
-        """Avec chgt de var"""
+        """Avec changement de variable."""
         if ode == 'ref':
             s = self.r*t_min
-            dv, dw = self.x0, self.y0   #'''Partie à revoir''' #!!!
+            dv, dw = self.x0, self.y0
             lst = [[s, dv, dw]]
             while lst[-1][0] <= t_max:
                 s += h  # *r
@@ -261,10 +293,11 @@ class Lotka_Volterra_chngt_var(Lotka_Volterra):
         raise ValueError(f"{ode} n'est pas un modèle valide parmis 'ref', 'Euler' et 'Heun'!")
 
 class Lotka_Volterra_limite(Lotka_Volterra):
-    """ """
+    """Modèle dynamique par le système Lotka-Volterra limité."""
     def __init__(self, x0, y0, r, p, m, q, X):
+        """Paramètres + init Lotka_Volterra."""
         super().__init__(x0, y0, r, p, m, q)
-        self.X = X
+        self.X = X  # Seuil
         self.orbite_y = (self.r/self.p)*(1-(self.orbite_x/self.X))
 
     def _variation_lapin(self, x, y) -> float:
@@ -273,10 +306,11 @@ class Lotka_Volterra_limite(Lotka_Volterra):
 
 
 class Lotka_Volterra_chngt_var_limite(Lotka_Volterra_chngt_var):
-    """ """
+    """Modèle dynamique par le système Lotka-Volterra limité avec changement de variable."""
     def __init__(self, x0, y0, r, p, m, q, V, alpha):
+        """Paramètres + init Lotka_Volterra."""
         super().__init__(x0, y0, r, p, m, q, alpha)
-        self.V = V
+        self.V = V  # Seuil
         self.orbite_y = (self.r/self.p)*(1-(self.orbite_x/self.V))
 
     def _variation_lapin(self, v, w) -> float:
@@ -303,7 +337,7 @@ def menu():
 
     def choix_modele()->tuple((str,int)):
         print(title('Veuillez choisir le modèle.'))
-        match menu_choix({1:"Modèle 1 - 4 variables",2:"Modèle 2 - 3 variables",3:"Modèle 3 - 4 variables et limite de lapins ",4:"Modèle 4 - 3 variables et limite de lapins",0:"Sortie"},'01234'):
+        match menu_choix({1:"Modèle 1 - LV simple",2:"Modèle 2 - LV avec changement de variable",3:"Modèle 3 - LV simple et limite de lapins ",4:"Modèle 4 - LV avec changement de variable et limite de lapins",0:"Sortie"},'01234'):
             case 0: raise KeyboardInterrupt('-Fin')
             case 1: return 'Lotka_Volterra',1
             case 2: return 'Lotka_Volterra_chngt_var',2
@@ -317,28 +351,28 @@ def menu():
             case 1:
                 match num:
                     case 1: return '2,2,1.0,1.0,1.0,1.0'
-                    case 2: raise ValueError('-Non défini')
+                    case 2: return '2,2,1.0,1.0,1.0,1.0,1.0'
                     case 3: return '2,2,1.0,1.0,1.0,1.0,50'
-                    case 4: raise ValueError('-Non défini')
+                    case 4: return '2,2,1.0,1.0,1.0,1.0,50,1.0'
             case 2:
                 match num:
                     case 1: return '4,10,1.5,0.05,0.48,0.05'
-                    case 2: raise ValueError('-Non défini')
+                    case 2: return '4,10,1.5,0.05,0.48,0.05,1.0'
                     case 3: return '4,10,1.5,0.05,0.48,0.05,50'
-                    case 4: raise ValueError('-Non défini')
+                    case 4: return '4,10,1.5,0.05,0.48,0.05,50,1.0'
             case 3:
                 match num:
                     case 1: return f'{input("nombre de lapins (int>=0) :")},{input("nombre de lynx (int>=0) :")},{input("τ de reproduction intrinsèques des lapins (float>=0) :")},{input("τ de mortalité des lapins due aux lynx rencontrés (float>=0) :")},{input("τ de mortalité intrinsèques des lynx (float>=0) :")},{input("τ de reproduction des lynx en f° des lapins mangés (float>=0) :")}'
-                    case 2: raise ValueError('-Non défini')
+                    case 2: return f'{input("nombre de lapins (int>=0) :")},{input("nombre de lynx (int>=0) :")},{input("τ de reproduction intrinsèques des lapins (float>=0) :")},{input("τ de mortalité des lapins due aux lynx rencontrés (float>=0) :")},{input("τ de mortalité intrinsèques des lynx (float>=0) :")},{input("τ de reproduction des lynx en f° des lapins mangés (float>=0) :")},{input("a (float>=0) :")}'
                     case 3: return f'{input("nombre de lapins (int>=0) :")},{input("nombre de lynx (int>=0) :")},{input("τ de reproduction intrinsèques des lapins (float>=0) :")},{input("τ de mortalité des lapins due aux lynx rencontrés (float>=0) :")},{input("τ de mortalité intrinsèques des lynx (float>=0) :")},{input("τ de reproduction des lynx en f° des lapins mangés (float>=0) :")},{input("limite du nombre de lapins (int>=0) :")}'
-                    case 4: raise ValueError('-Non défini')
+                    case 4: return f'{input("nombre de lapins (int>=0) :")},{input("nombre de lynx (int>=0) :")},{input("τ de reproduction intrinsèques des lapins (float>=0) :")},{input("τ de mortalité des lapins due aux lynx rencontrés (float>=0) :")},{input("τ de mortalité intrinsèques des lynx (float>=0) :")},{input("τ de reproduction des lynx en f° des lapins mangés (float>=0) :")},{input("limite du nombre de lapins (int>=0) :")},{input("a (float>=0) :")}'
 
     def choix_intervalle()->str:
         print('\n' + title("Veuillez choisir l\'intervalle d\'affichage."))
         match menu_choix({1:"Intervalle prédéfini",2:"Entrée manuelle",0:"Sortie"},'012'):
             case 0: raise KeyboardInterrupt('-Fin')
             case 1: return '0, 50, 0.0005'
-            case 2: return f'{input("Début (float>=0): ")},{input("Fin (float>=0 et >=start): ")},{input("Pas (float>=0): ")}'
+            case 2: return f'{input("Début (float>=0): ")},{input("Fin (float>=0 et >=start): ")},{input("Pas (float>0): ")}'
 
     def choix_affichage(num)->tuple((str,str)):
         print('\n' + title('Veuillez choisir l\'affichage.'))
@@ -365,8 +399,8 @@ def menu():
                 print('\n' + title('Activer les points d\'équilibres?'))
                 match menu_choix({1:"Activé point d'équilibre",2:"Désactivé point d'équilibre",0:"Sortie"},'01234'):
                     case 0: raise KeyboardInterrupt('-Fin')
-                    case 1: return 'affichage_orbite',f'lst_condition_initiale={lst},orbite=True'
-                    case 2: return 'affichage_orbite',f'lst_condition_initiale={lst},orbite=False'
+                    case 1: return 'portrait_phase',f'lst_condition_initiale={lst},orbite=True'
+                    case 2: return 'portrait_phase',f'lst_condition_initiale={lst},orbite=False'
             case 4: return 'affichage_comparaison_ode', None
             case 5: return 'affichage_comparaison_parallele_ode',None
     try:
@@ -382,19 +416,4 @@ def menu():
         print(err)
 
 if __name__ == '__main__':
-    #menu()
-    
-    x: int = 2           # >= 0 -> nombre de lapins
-    y: int = 2           # >= 0 -> nombre de lynx
-    r: float = 1.0       # >= 0 -> τ de reproduction intrinsèques des lapins
-    p: float = 1.0       # >= 0 -> τ de mortalité des lapins due aux lynx rencontrés
-    m: float = 1.0       # >= 0 -> τ de mortalité intrinsèques des lynx
-    q: float = 1.0       # >= 0 -> τ de reproduction des lynx en f° des lapins mangés
-    
-    X: int = 50         # >= 0 -> limite du nombre de lapins
-    alpha: float = 1.0       # >= 0 -> a
-
-    ode = Lotka_Volterra(x, y, r, p, m, q, 10, 5)
-    ode.affichage(0, 10, 0.1)
-    ode.affichage_comparaison_ode(0, 10, 0.1)
-    ode.affichage_comparaison_parallele_ode(0, 10, 0.5)
+    menu()
