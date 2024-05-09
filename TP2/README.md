@@ -12,10 +12,12 @@
 ![LV_limite-2-1-1](https://github.com/Toppics/MT39/assets/110732997/2cf60dd6-2c89-490d-8809-30d9b36a78d5)
 ![LV_limite-2-1-3](https://github.com/Toppics/MT39/assets/110732997/cfecf51c-1c43-4d5e-a63a-70ac28af79c9)
 
+![LV_simple-1-champ_direction](https://github.com/Toppics/MT39/assets/110732997/2e4ef28b-e4cf-420a-b44b-53ae688e62f1)
+![LV_limite-2-champ_direction](https://github.com/Toppics/MT39/assets/110732997/304ede61-cc83-4245-8d09-1f043fb8f5b8)
+
 ![LV_simple-1-2-5B](https://github.com/Toppics/MT39/assets/110732997/611fbc0b-61cb-4f39-bf50-61c9c369c3cc)
 ![LV_simple-1-2-5](https://github.com/Toppics/MT39/assets/110732997/4ff6f58c-fbc7-428c-b004-9950f2ec4259)
 ![LV_simple-1-2-4](https://github.com/Toppics/MT39/assets/110732997/53cead37-0a8a-4f8d-afe7-9006ff8bb235)
-
 
 
 ![ghjklm](https://github.com/Toppics/MT39/assets/110732997/e91c1427-dd28-49f5-af47-cb1ce85dc8d9)
