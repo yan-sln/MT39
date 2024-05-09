@@ -335,6 +335,13 @@ def menu():
              raise TypeError(f'{text} doit être une chaîne de caractère!')
         return f'\033[1;34m{text}\033[0;0m'
 
+    def choix_condition_intiale():
+        print(f"\n{title('Variations des conditions initiales.')}\nNombres (int) séparés par <espace>\nNB: <entree> pour liste par défaut.")
+        lst = [int(x) for x in input('>>').split()]
+        if len(lst) == 0:
+            lst = [x for x in range(-2, 12, 2)]
+        return lst
+
     def choix_modele()->tuple((str,int)):
         print(title('Veuillez choisir le modèle.'))
         match menu_choix({1:"Modèle 1 - LV simple",2:"Modèle 2 - LV avec changement de variable",3:"Modèle 3 - LV simple et limite de lapins ",4:"Modèle 4 - LV avec changement de variable et limite de lapins",0:"Sortie"},'01234'):
@@ -376,7 +383,7 @@ def menu():
 
     def choix_affichage(num)->tuple((str,str)):
         print('\n' + title('Veuillez choisir l\'affichage.'))
-        match menu_choix({1:"Affichage simple",2:"Affichage avec variations des coefficients",3:"Portrait de phase (visualisation des orbites)",4:"Affichage comparaison des ODEs",5:"Affichage comparaison parallèle des ODEs",0:"Sortie"},'012345'):
+        match menu_choix({1:"Affichage simple",2:"Affichage avec variations des coefficients",3:"Portrait de phase (visualisation des orbites)",4:"Portrait de phase avec champ de direction",5:"Affichage comparaison des ODEs",6:"Affichage comparaison parallèle des ODEs",0:"Sortie"},'0123456'):
             case 0: raise KeyboardInterrupt('-Fin')
             case 1: return 'affichage',None
             case 2:
@@ -392,17 +399,18 @@ def menu():
                     case 2 | 4:
                         raise ValueError('-Non défini')
             case 3:
-                print(f"\n{title('Variations des conditions initiales.')}\nNombres (int) séparés par <espace>\nNB: <entree> pour liste par défaut.")
-                lst = [int(x) for x in input('>>').split()]
-                if len(lst) == 0:
-                    lst = [x for x in range(-2, 12, 2)]
+                lst = choix_condition_intiale()
                 print('\n' + title('Activer les points d\'équilibres?'))
                 match menu_choix({1:"Activé point d'équilibre",2:"Désactivé point d'équilibre",0:"Sortie"},'01234'):
                     case 0: raise KeyboardInterrupt('-Fin')
                     case 1: return 'portrait_phase',f'lst_condition_initiale={lst},orbite=True'
                     case 2: return 'portrait_phase',f'lst_condition_initiale={lst},orbite=False'
-            case 4: return 'affichage_comparaison_ode', None
-            case 5: return 'affichage_comparaison_parallele_ode',None
+            case 4: 
+                lst = choix_condition_intiale()
+                return 'affichage_champ_direction',f'lst_condition_initiale={lst},orbite=True'
+            
+            case 5: return 'affichage_comparaison_ode', None
+            case 6: return 'affichage_comparaison_parallele_ode',None
     try:
         modele, num = choix_modele()
         donnee = choix_donnee(num)
