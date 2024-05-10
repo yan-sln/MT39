@@ -58,7 +58,7 @@ class Lotka_Volterra:
 
     def __setattr__(self, name, value):
         """Setter pour toutes les variables."""
-        if name in ['x0', 'y0', 'n0', 'X']:
+        if name in ['x0', 'y0', 'z0', 'X']:
             if type(value) is not int:
                 try: value = int(value)
                 except ValueError: raise ValueError(f'{name} doit être un entier!')
