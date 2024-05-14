@@ -138,7 +138,7 @@ class Lotka_Volterra:
         ax[2].set_xlabel('Temps')
         ax[0].set_ylabel('Ref'); ax[1].set_ylabel('Euler'); ax[2].set_ylabel('Heun')
         # Textes sur le coté
-        fig.suptitle(f'Population de lapins et de\nlynx au cours du temps.\nConditions initiales :\n{self.x0} lapins pour {self.y0} lynx sur\nune durée de {t_max-t_min} mois\navec un pas de {h}.', x=0.92, y=0.86, ha='left', fontsize= 10)
+        fig.suptitle(f'Population de lapins et de\nlynx au cours du temps.\nConditions initiales :\n{self.x0} lapins pour {self.y0} lynx sur\nune durée de {t_max-t_min} mois\avec un pas de {h}.', x=0.92, y=0.86, ha='left', fontsize= 10)
         if type(self) is (Lotka_Volterra or Lotka_Volterra_limite):
             plt.text(.92, .43, f'r: {self.r}      p: {self.p}\nm: {self.m}    q: {self.q}\nPas: {h}\nN: {t_max}', transform=fig.transFigure, ha='left', fontsize= 10)
         if type(self) is (Lotka_Volterra_limite or Lotka_Volterra_chngt_var_limite):
@@ -167,7 +167,7 @@ class Lotka_Volterra:
         ax[1].set_xlabel('Temps')
         ax[0].set_ylabel('Lapins'); ax[1].set_ylabel('Lynx')
         # Textes sur le coté
-        fig.suptitle(f'Population de lapins et de\nlynx au cours du temps.\nConditions initiales :\n{self.x0} lapins pour {self.y0} lynx sur\nune durée de {t_max-t_min} mois\navec un pas de {h}.', x=0.92, y=.86, ha='left', fontsize= 10)
+        fig.suptitle(f'Population de lapins et de\nlynx au cours du temps.\nConditions initiales :\n{self.x0} lapins pour {self.y0} lynx sur\nune durée de {t_max-t_min} mois\avec un pas de {h}.', x=0.92, y=.86, ha='left', fontsize= 10)
         if type(self) is (Lotka_Volterra or Lotka_Volterra_limite):
             plt.text(.92, .41, f'r: {self.r}      p: {self.p}\nm: {self.m}    q: {self.q}\nPas: {h}\nN: {t_max}', transform=fig.transFigure, ha='left', fontsize= 10)
         if type(self) is (Lotka_Volterra_limite or Lotka_Volterra_chngt_var_limite):
@@ -198,7 +198,7 @@ class Lotka_Volterra:
         ax[0].set_xlabel('Mois'); ax[1].set_xlabel('Mois')
         ax[0].set_ylabel('Lapins'); ax[1].set_ylabel('Lynx')
         ax[1].legend(title=f'Variation de {var}', bbox_to_anchor=(1.05, 1), shadow=True)
-        fig.suptitle(f'Population de lapins et de\nlynx au cours du temps.\nConditions initiales :\n{self.x0} lapins pour {self.y0} lynx sur\nune durée de {t_max-t_min} mois\navec un pas de {h}.', x=0.92, y=0.8, ha='left', fontsize= 10)
+        fig.suptitle(f'Population de lapins et de\nlynx au cours du temps.\nConditions initiales :\n{self.x0} lapins pour {self.y0} lynx sur\nune durée de {t_max-t_min} mois\avec un pas de {h}.', x=0.92, y=0.8, ha='left', fontsize= 10)
         ax[0].grid(); ax[1].grid(); plt.show()
 
     def portrait_phase(self, t_min: int, t_max: int, h: float, lst_condition_initiale:list = [x for x in range(-2, 12, 2)], orbite:bool = False):
