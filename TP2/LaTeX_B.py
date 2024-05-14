@@ -108,7 +108,7 @@ class Lotka_Volterra_trois_especes_chaine_alimentaire(Lotka_Volterra):
         ax.plot(df['t'], df['z'], 'g', label='Serpents', linestyle='dashdot')
         ax.plot(df['t'], df['y'], 'r', label='Aigles', linestyle='dashed')
         plt.xlabel('Mois'); plt.ylabel('Population en unité')
-        plt.title(f'Population de souris, de serpents et d\'aigles au cours du temps.\nConditions initiales : {self.x0} souris, {self.y0} serpents pour {self.z0} aigles\nsur une durée de {t_max-t_min} mois navec un pas de {h}.')
+        plt.title(f'Population de souris, de serpents et d\'aigles au cours du temps.\nConditions initiales : {self.x0} souris, {self.y0} serpents pour {self.z0} aigles\nsur une durée de {t_max-t_min} mois avec un pas de {h}.')
         # Rajoute un texte avec les conditions intiales à partir des params
         text =''; _dict = dict(self.__dict__)
         for key in self.__dict__.keys():
@@ -152,8 +152,8 @@ class Lotka_Volterra_trois_especes_chaine_alimentaire(Lotka_Volterra):
             df = self.modele_Lotka_Volterra(t_min, t_max, h)
             ax.plot3D(df['x'], df['y'], df['z'], 'green')
             ax.scatter(df['x'], df['y'], df['z'], s=5, c=arange(len(df['t'])), cmap='cividis')
-        ax.set_xlabel('Lapins'); ax.set_ylabel('Aigles'); ax.set_zlabel('Renards')
-        plt.title(f'Population de lapins, d\'aigles et de renards au cours du temps.\nConditions initiales : {self.x0} lapins, {self.y0} aigles pour {self.z0} renard\nsur une durée de {t_max-t_min} mois navec un pas de {h}.')
+        ax.set_xlabel('Souris'); ax.set_ylabel('Serpents'); ax.set_zlabel('Aigles')
+        plt.title(f'Population de souris, de serpents et d\'aigles au cours du temps.\nConditions initiales : {self.x0} souris, {self.y0} serpents pour {self.z0} aigles\nsur une durée de {t_max-t_min} mois avec un pas de {h}.')
         plt.grid(); plt.show()
         
 
@@ -208,7 +208,7 @@ class Lotka_Volterra_trois_especes_2predateurs_1proie(Lotka_Volterra):
         ax.plot(df['t'], df['y'], 'g', label='Aigle', linestyle='dashdot')
         ax.plot(df['t'], df['z'], 'r', label='Renard', linestyle='dashed')
         plt.xlabel('Mois'); plt.ylabel('Population en unité')
-        plt.title(f'Population de lapins, d\'aigles et de renards au cours du temps.\nConditions initiales : {self.x0} lapins, {self.y0} aigles pour {self.z0} renard\nsur une durée de {t_max-t_min} mois navec un pas de {h}.')
+        plt.title(f'Population de lapins, d\'aigles et de renards au cours du temps.\nConditions initiales : {self.x0} lapins, {self.y0} aigles pour {self.z0} renard\nsur une durée de {t_max-t_min} mois avec un pas de {h}.')
         # Rajoute un texte avec les conditions intiales à partir des params
         text =''; _dict = dict(self.__dict__)
         for key in self.__dict__.keys():
@@ -253,7 +253,7 @@ class Lotka_Volterra_trois_especes_2predateurs_1proie(Lotka_Volterra):
             ax.plot3D(df['x'], df['y'], df['z'], 'green')
             ax.scatter(df['x'], df['y'], df['z'], s=5, c=arange(len(df['t'])), cmap='cividis')
         ax.set_xlabel('Lapins'); ax.set_ylabel('Aigles'); ax.set_zlabel('Renards')
-        plt.title(f'Population de lapins, d\'aigles et de renards au cours du temps.\nConditions initiales : {self.x0} lapins, {self.y0} aigles pour {self.z0} renard\nsur une durée de {t_max-t_min} mois navec un pas de {h}.')
+        plt.title(f'Population de lapins, d\'aigles et de renards au cours du temps.\nConditions initiales : {self.x0} lapins, {self.y0} aigles pour {self.z0} renard\nsur une durée de {t_max-t_min} mois avec un pas de {h}.')
         plt.grid(); plt.show()
 
 
