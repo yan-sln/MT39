@@ -295,9 +295,9 @@ class Modele:
             # Trace directement
             plt.plot(df.iloc[:,i], label=df.columns[i], color = colors[i], alpha=.7)
         # Différentes configurations pour rendre le graphe plus lisible
-        plt.title("Population dans une classe d'âge, en fonction de l'âge.")
+        plt.title(f"Population dans une classe d'âge, en fonction de l'âge\navec un taux de centenaires de {self.taux}")
         plt.legend(title=f'Années : {df.columns[0]} - {df.columns[-1]}', bbox_to_anchor=(1.05, 1), shadow=True, ncol=tmp//8)
-        plt.xlabel('Années'); plt.ylabel('Population')
+        plt.xlabel('Âge'); plt.ylabel('Population')
         plt.grid(); plt.xlim(0,99)
         plt.show()
 
@@ -307,7 +307,7 @@ class Modele:
         fig, ax = plt.subplots(subplot_kw={"projection": "3d"}, figsize=(16, 9))
         ax.plot3D(df['Années'], df['Âge'], df['Population'], label='')
         ax.set(xlabel='Années', ylabel='Âge', zlabel='Population')
-        plt.title(f'Population dans une classe d\'âge, sur la\npériode 2016 - {self.annee_visee} en fonction de l\'âge.')
+        plt.title(f'Population dans une classe d\'âge, sur la\npériode 2016 - {self.annee_visee} en fonction de l\'âge\navec un taux de centenaires de {self.taux}')
         ax.view_init(elev, azim); plt.grid()
         plt.show()
 
@@ -323,7 +323,7 @@ class Modele:
         fig, ax = plt.subplots(subplot_kw={"projection": "3d"}, figsize=(16, 9))
         ax.bar3d(x, y, z, dx, dy, dz)
         # Différentes configurations pour rendre le graphe plus lisible
-        plt.title(f'Population dans une classe d\'âge, sur la\npériode 2016 - {self.annee_visee} en fonction de l\'âge.')
+        plt.title(f'Population dans une classe d\'âge, sur la\npériode 2016 - {self.annee_visee} en fonction de l\'âge\navec un taux de centenaires de {self.taux}')
         ax.set(xlabel='Années', ylabel='Âge', zlabel='Population')
         ax.view_init(35, 10)
         plt.show()
@@ -337,7 +337,7 @@ class Modele:
         plt.plot(df_2016['Âge'],df_2016['Population'],label= (a2016:=df_2016['Années'][0]))
         plt.plot(df_visee['Âge'],df_visee['Population'],label= (aVisee:=df_visee['Années'][0]))
         # Différentes configurations pour rendre le graphe plus lisible
-        plt.title(f'Population en fonction de la classe d\'âge des années {a2016} et {aVisee}.')
+        plt.title(f'Population en fonction de la classe d\'âge des années {a2016} et {aVisee}\navec un taux de centenaires de {self.taux}')
         plt.xlabel('Classe d\'âge'); plt.ylabel('Population')
         plt.grid(); plt.xlim(df_2016.iloc[0,:]['Âge'], df_2016.iloc[-1,:]['Âge'])
         plt.legend(); plt.show()
@@ -378,17 +378,17 @@ def menu():
             case 0: raise KeyboardInterrupt('-Fin')
             case 1: m.affichage_deviation_agrege()
             case 2: m.affichage_population_age()
-            case 3: m.affichage_population_age_3D(int(input('Angle : ')), int(input('Hauteur (int): ')))
-            case 4: m.affichage_population_age_bar_3D(int(input('Angle : ')), int(input('Hauteur (int): ')))
+            case 3: m.affichage_population_age_3D(int(input('Angle (int): ')), int(input('Hauteur (int): ')))
+            case 4: m.affichage_population_age_bar_3D(int(input('Angle (int): ')), int(input('Hauteur (int): ')))
             case 5: m.affichage_population_année()
-            case 6: m.affichage_quotient_mortalité_100_000_age(bool(input('Echèlle log (True/False): ')))
+            case 6: m.affichage_quotient_mortalité_100_000_age(bool(input('Echèlle log (True, rien pour False): ')))
     try:
         #
         print(title("Utiliser %matplotlib avant d'éxécuter ce menu pour afficher les graphes en 3D."))
         Data.creer_donnees()  # Créer les données
         annee = int(input("Année entre 1986 et 2019 (inclus): "))
-        taux = float(input("Taux centenaires: "))
-        output = bool(input('Affichage (True/False): '))
+        taux = float(input("Taux centenaires (bon résultat pour 0.01): "))
+        output = bool(input('Affichage (True, rien pour False): '))
         m = Modele(annee, taux=taux, output=output)
         m.modele()  # Exécute le modèle
         choix_affichage(m)  # Propose différents affichages
