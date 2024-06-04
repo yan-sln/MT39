@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 rcParams['figure.dpi']:float = 300    # Augmenter la résolution des figures
-
+rcParams['figure.figsize']:float = (16,9)   # Augmenter la taille des figures
 
 class Data:
     """Créer les données dans des .csv + méthodes de lecture."""
@@ -152,7 +152,7 @@ class Modele:
         self.__output = value
 
     def add_liste_classe_age(self):
-        """ """
+        """Ajoute les données dans une liste."""
         df = Data.lecture('donnees_2016.csv')
         liste_classe_age = []
         for age, nombre, morta in zip(df['Âge'], df['Population'], df['Quotient_de_mortalité_pour_100_000']):
@@ -160,6 +160,7 @@ class Modele:
         return liste_classe_age
 
     def modele(self):
+        """Calcul le modèle."""
         if len(self.liste_classe_age) == 0:
             raise Exception('Les données ne sont pas chargées!')
         df = Data.lecture('donnees_main.csv')
@@ -237,26 +238,26 @@ class Modele:
         return dct
 
     ## Différentes méthodes pour pré-formater et comparer le modèle et les données
-    def comparaison_agrege(self, annee:int)->pd.DataFrame:
-        """ """
+    def comparaison_agrege(self, annee:int):
+        """Ordonne les données dans un dict et les ajoute dans la liste."""
         model = self.modele_agrege()    # Agrège les données du modèle dans un dictionnaire
         data = self.main_agrege(annee)   # Agrège les données connus dans un dictionnaire
         dct = {}    # Créer un dictionnaire de comparaison
-        #
+        # Affihce évetuellement la déviation du modèle
         if self.output: print(f'Déviation du modèle en {annee}: (données/modèle)')
-        #
+        # Ordonne les données dans un dict
         dct.update({'Année': int(annee)})
-        for key in data.keys(): # data.keys == main.keys
+        for key in data.keys(): # NB: data.keys == main.keys -> True
             dct.update(tmp:={key: round((data[key]/model[key] * 100)-100, 2)})
             if self.output: print(f'{list(tmp.keys())[0]} : {list(tmp.values())[0]} %')
         # Ajoute à la liste de dict
         self.__resultat_agrege.append(dct)
 
-    def comparaison_classe_age(self, annee:int)->pd.DataFrame:
-        """ """
-        #
+    def comparaison_classe_age(self, annee:int):
+        """"Ordonne les données dans une liste et les ajoute dans la liste."""
+        # Affihce évetuellement la déviation du modèle
         if self.output: print(f'Déviation du modèle en {annee}: (données/modèle)')
-        #
+        # Ordonne les données et les ajoute
         for classe_age in self.liste_classe_age:
             self.__resultat_classe_age.append([int(annee), classe_age()[0], classe_age()[1]])
 
@@ -348,7 +349,7 @@ class Modele:
         df = Data.lecture('donnees_2016.csv') # Récupère les données
         plt.plot(df['Âge'],df['Quotient_de_mortalité_pour_100_000']) # Les trace
         # Différentes configurations pour rendre le graphe plus lisible
-        plt.title('Quotient de mortalité pour 100 000 en 2016 par âges de 0 à 99 ans.')
+        plt.title(f'Quotient de mortalité pour 100 000 en 2016 par âges de 0 à 99 ans{ ' (log)' if log else ''}.')
         plt.xlabel('Âge'); plt.ylabel('Décès pour 100 000')
         plt.grid(); plt.xlim(df.iloc[0,:]['Âge'], df.iloc[-1,:]['Âge'])
         if log: plt.yscale("log")   # Éventuellement échelle logarithmique
