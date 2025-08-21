@@ -7,9 +7,9 @@ The goal is to study **exponential growth**, **predator-prey dynamics**, and **p
 
 ## Contents
 
-1. [Exponential Function, Approximation, and Population Growth](https://github.com/yan-sln/MT39/new/main?filename=README.md#exponential-function-approximation-and-population-growth--tp1py)
-2. [Lotka-Volterra Predator-Prey Models and Variants](https://github.com/yan-sln/MT39/new/main?filename=README.md#lotka-volterra-predator-prey-models-and-variants--tp2py)
-3. [Demographic Modeling](https://github.com/yan-sln/MT39/new/main?filename=README.md#demographic-modeling--tp3py)
+1. [Exponential Function, Approximation, and Population Growth](#exponential-function-approximation-and-population-growth--tp1py)
+2. [Lotka-Volterra Predator-Prey Models and Variants](d#lotka-volterra-predator-prey-models-and-variants--tp2py)
+3. [Demographic Modeling](#demographic-modeling--tp3py)
 
 ---
 
